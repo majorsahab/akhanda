@@ -39,7 +39,7 @@ To generate checksums for all files in a directory, use the `generate` action. B
 To verify checksums for all files in a directory, use the `verify` action. Akhanda will read the checksums from the specified checksum file and compare them to the current checksums of the files in the directory.
 
 ```sh
-./akhanda verify
+./akhanda -action=verify  -checksumFile=<mychecksums_file>
 ```
 
 ## Contributing
