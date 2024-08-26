@@ -1,19 +1,29 @@
 {
-    "name": "akhanda Container",
+    "name": "akhanda",
     "dockerFile": "Dockerfile",
-    "context": "..",
+    "build": {
+        "args": {
+            "USERNAME": "${localEnv:USER}"
+        },
+        "context": ".."
+    },
+    "runArgs": [
+        "--cap-add=SYS_PTRACE",
+        "--security-opt",
+        "seccomp=unconfined"
+    ],
     "customizations": {
         "vscode": {
-            "settings": {
-                "go.toolsGopath": "/go",
-                "go.gopath": "/go"
-            },
+            "settings": {},
             "extensions": [
-                "golang.go"
+                "golang.go",
+                "ms-azuretools.vscode-docker"
             ]
         }
     },
-    "postCreateCommand": "go mod tidy",
-    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
-    "remoteUser": "root"
+	"mounts": [
+		"source=myriad-bashhistory,target=/commandhistory,type=volume"
+	],
+    "workspaceMount": "source=${localWorkspaceFolder},target=/akhanda,type=bind",
+    "workspaceFolder": "/akhanda"
 }

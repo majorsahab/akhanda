@@ -2,17 +2,17 @@
 FROM golang:latest
 
 # Set the working directory inside the container
-WORKDIR /akhanda
+ARG USERNAME
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-# Copy go.mod and go.sum files to the container
-COPY go.mod go.sum ./
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME -s /bin/bash
 
-# Download all dependencies
-RUN go mod download
-
-# Copy the rest of the application's source code to the container
-COPY . .
+ENV USER=$USERNAME
+USER $USERNAME
 
 # Install any necessary Go tools (optional, customize as needed)
 RUN go install golang.org/x/tools/gopls@latest
 
+WORKDIR /akhanda
